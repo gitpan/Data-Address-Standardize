@@ -1,4 +1,32 @@
 
+0.003
+
+  * Reorganized the code to have all the *.pm files nested under
+    the lib/ directory and moved the tests under the t/ directory.
+
+  * Added some examples in the examples/ directory.
+
+  * Updated based on the latest form at the USPS web site.
+
+  * Updated to handle results of more than one matching address.
+
+  * Deprecated the Data::Address::Standardize interface in
+    preparation for moving completely to the the new
+    Scrape::USPS::ZipLookup namespace.
+
+    The Data::Address::Standardize namespace will soon become
+    available for implementing the address standardization
+    algorithms without scraping (much as service bureaus do for
+    a fee today).
+
+    This will be the next to the last release of this code under
+    this name. It will be followed immediately by a release of
+    the Scrape::USPS::ZipLookup modules and then a version of
+    Data::Address::Standardize without the Scrape::* modules
+    bundled, but with a Makefile.PL requirement for them to be
+    present.
+
+
 0.002
 
   * Fixed the regular expression for working with zip codes so it

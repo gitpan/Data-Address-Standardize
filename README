@@ -22,7 +22,7 @@ SYNOPSIS
 
 DESCRIPTION
     The United States Postal Service (USPS) has on its web site an HTML form
-    at `http://www.usps.gov/ncsc/lookups/lookup_zip+4.html' for
+    at "http://www.usps.gov/ncsc/lookups/lookup_zip+4.html" for
     standardizing an address. Given a firm, urbanization, street address,
     city, state, and zip, it will put the address into standard form
     (provided the address is in their database) and display a page with the
@@ -34,7 +34,7 @@ DESCRIPTION
 
     Because the USPS could change or remove this functionality at any time,
     be prepared for the possibility that this code may fail to function. In
-    fact, as of this version, there is no error checking in place, so if
+    fact, as of this version, there is little error checking in place, so if
     they do change things, this code will most likely fail in a noisy way.
     If you discover that the service has changed, please email the author
     your findings.
@@ -42,12 +42,11 @@ DESCRIPTION
     If an error occurs in trying to standardize the address, then no array
     will be returned. Otherwise, a four-element array will be returned.
 
-    To see debugging output, set $Data::Address::Standardize::verbose to a
-    true value.
+    To see debugging output, call "Data::Address::Standardize::verbose(1)".
 
 TERMS OF USE
     BE SURE TO READ AND FOLLOW THE UNITED STATES POSTAL SERVICE TERMS OF USE
-    PAGE AT `http://www.usps.gov/disclaimer.html'. IN PARTICULAR, NOTE THAT
+    PAGE AT "http://www.usps.gov/disclaimer.html". IN PARTICULAR, NOTE THAT
     THEY DO NOT PERMIT THE USE OF THEIR WEB SITE'S FUNCTIONALITY FOR
     COMMERCIAL PURPOSES. DO NOT USE THIS CODE IN A WAY THAT VIOLATES THE
     TERMS OF USE.
@@ -57,10 +56,10 @@ TERMS OF USE
     belongs to the user of this code, not the author.
 
 AUTHOR
-    Gregor N. Purdy, `gregor@focusresearch.com'.
+    Gregor N. Purdy, "gregor@focusresearch.com".
 
 COPYRIGHT
-    Copyright (C) 1999-2000 Gregor N. Purdy. All rights reserved. This
+    Copyright (C) 1999-2001 Gregor N. Purdy. All rights reserved. This
     program is free software; you can redistribute it and/or modify it under
     the same terms as Perl itself.
 
