@@ -1,4 +1,16 @@
 
+0.004
+
+  * Removed the internal copies of the Scrape::USPS::ZipLookup
+    modules and added a dependency on that module to Makefile.PL.
+
+  * Removed the examples directory, because it belongs with
+    Scrape::USPS::ZipLookup.
+
+  * NOTE: This is expected to be the last version of this module.
+    Future development will occur in Scrape::USPS::ZipLookup.
+
+
 0.003
 
   * Reorganized the code to have all the *.pm files nested under

@@ -21,6 +21,11 @@ SYNOPSIS
       }
 
 DESCRIPTION
+    NOTE: This code is (nearly) obsolete. It has been gutted, and the guts
+    now reside in Scrape::USPS::ZipLookup. This module persists to maintain
+    the old interface, but use of this module now requires that
+    Scrape::USPS::ZipLookup be installed.
+
     The United States Postal Service (USPS) has on its web site an HTML form
     at "http://www.usps.gov/ncsc/lookups/lookup_zip+4.html" for
     standardizing an address. Given a firm, urbanization, street address,

@@ -1,7 +1,7 @@
 #
 # Standardize.pm
 #
-# [ $Revision: 1.6 $ ]
+# [ $Revision: 1.7 $ ]
 #
 # Perl 5 module to standardize U.S. postal addresses by referencing
 # the U.S. Postal Service's web site:
@@ -27,7 +27,7 @@ BEGIN {
 	@EXPORT_OK = @EXPORT;
 }
 use vars qw($VERSION);
-$VERSION = '0.003';
+$VERSION = '0.004';
 
 use Scrape::USPS::ZipLookup;
 
@@ -104,6 +104,11 @@ or,
 
 
 =head1 DESCRIPTION
+
+B<NOTE:> This code is (nearly) obsolete. It has been gutted, and the guts now
+reside in Scrape::USPS::ZipLookup. This module persists to maintain the
+old interface, but use of this module now requires that Scrape::USPS::ZipLookup
+be installed.
 
 The United States Postal Service (USPS) has on its web site an HTML form at
 C<http://www.usps.gov/ncsc/lookups/lookup_zip+4.html>
