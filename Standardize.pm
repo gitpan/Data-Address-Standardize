@@ -7,7 +7,7 @@
 # BE SURE TO READ AND UNDERSTAND THE TERMS OF USE SECTION IN THE
 # DOCUMENTATION, WHICH MAY BE FOUND AT THE END OF THIS SOURCE CODE.
 #
-# Copyright (C) 1999 Gregor N. Purdy. All rights reserved.
+# Copyright (C) 1999-2000 Gregor N. Purdy. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -23,11 +23,12 @@ BEGIN {
 	@EXPORT_OK = @EXPORT;
 }
 use vars qw($VERSION);
-$VERSION = '0.001';
+$VERSION = '0.002';
 
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
+use vars qw($verbose);
 
 my $form_url  = 'http://www.usps.gov/cgi-bin/zip4/zip4inq';
 
@@ -43,21 +44,42 @@ sub parse_response
 {
 	my ($addr) = @_;
 
-	$addr =~ m/The standardized address is:<p>(.*)/sm;
-	$addr = $1;
+	return unless ($addr =~ m/The standardized address is:/sm);
 
-	$addr =~ m/(.*)<TABLE/sm;
-	$addr = $1;
+	#
+	# First, chop out all the lines preceding and following the
+	# address:
+	#
 
-	$addr =~ s/<b>//ig;
-	$addr =~ s/<\/b>//ig;
-	$addr =~ s/<br>//ig;
-	$addr =~ s/^\s*//mg;
-	$addr =~ s/\n/|/mg;
-	$addr =~ s/\s+/ /g;
-	$addr =~ s/ (..) (\d+(-\d+)?).*$/|$1|$2/;
+	$addr =~ s/^.*The standardized address is:<p>(.*)<TABLE.*$/$1/sm;
 
-	return split('\|', $addr);
+	#
+	# Now, perform some simple transformations to get it into shape:
+	#
+
+	$addr =~ s/<\/?b>//ig;  # Remove <b> and </b> tags.
+	$addr =~ s/<br>//ig;    # Remove <br> tags.
+	$addr =~ s/^\s*//mg;    # Remove leading whitespace.
+	$addr =~ s/\s*$//mg;    # Remove trailing whitespace.
+	$addr =~ s/\n/|/mg;     # Put it all on one line with '|' between fields
+	$addr =~ s/\s+/ /g;     # Collapse whitespace.
+
+	#
+	# Add field delimiters for the state and zip code:
+	#
+
+	$addr =~ s/ ([A-Z]{2}) (\d{5}(-\d{4})?).*$/|$1|$2/i;
+
+	#
+	# Split it into an array and return it:
+	#
+	# We do explicit assignment in case there were any extra elements
+	# produced by split.
+	#
+
+	my ($street, $city, $state, $zip) = split('\|', $addr);
+
+	return ($street, $city, $state, $zip);
 }
 
 
@@ -83,22 +105,69 @@ sub form_request
 
 
 #
+# std_inner()
+#
+# The inner portion of the process, so it can be shared by
+# std_addr() and std_addrs().
+#
+
+sub std_inner
+{
+	my $ua  = shift;
+
+	if ($verbose) {
+		print ' ', '_' x 77, ' ',  "\n";
+		print '/', ' ' x 77, '\\', "\n";
+		print "THE INPUT WAS:\n";
+		print "'", join("'\n'", @_), "'\n";
+	}
+
+	my $req = form_request(@_);
+
+	if ($verbose) {
+		print "-" x 79, "\n";
+		print "THE REQUEST WAS:\n";
+		print $req->content, "\n";
+	}
+
+	my $res = $ua->request($req);
+
+	die $res->error_as_HTML unless $res->is_success;
+
+	if ($verbose) {
+		print "-" x 79, "\n";
+		print "THE RESPONSE WAS:\n";
+		print $res->content;
+	}
+
+	my @result = parse_response($res->content);
+
+	if ($verbose) {
+		print "-" x 79, "\n";
+
+		if (@result) {
+			print "THE OUTPUT WAS:\n";
+			print "'", join("'\n'", @result), "'\n";
+		} else {
+			print "THERE WAS NO OUTPUT (ERROR).\n";
+		}
+
+		print '\\', '_' x 77, '/',  "\n";
+	}
+
+	return @result;
+}
+
+
+#
 # std_addr()
 #
 
 sub std_addr
 {
-	my $ua;
-	my $req;
-	my $res;
+	my $ua  = new LWP::UserAgent;
 
-	$ua  = new LWP::UserAgent;
-	$req = form_request(@_);
-	$res = $ua->request($req);
-
-	die $res->error_as_HTML unless $res->is_success;
-
-	return parse_response($res->content);
+	return std_inner $ua, @_;
 }
 
 
@@ -108,21 +177,13 @@ sub std_addr
 
 sub std_addrs
 {
-	my $ua;
-	my $req;
-	my $res;
-	my @addr;
 	my @result;
 
-	$ua = new LWP::UserAgent;
+	my $ua = new LWP::UserAgent;
 
 	foreach my $addr (@_) {
-		$req = form_request(@$addr);
-		$res = $ua->request($req);
+		my @addr = std_inner($ua, @$addr);
 
-		die $res->error_as_HTML unless $res->is_success;
-
-		@addr = parse_response($res->content);
 		push @result, [ @addr ];
 	}
 
@@ -168,6 +229,7 @@ or,
       print join('|', @$_), "\n";
   }
 
+
 =head1 DESCRIPTION
 
 The United States Postal Service (USPS) has on its web site an HTML form at
@@ -186,6 +248,12 @@ be prepared for the possibility that this code may fail to function. In
 fact, as of this version, there is no error checking in place, so if they
 do change things, this code will most likely fail in a noisy way. If you
 discover that the service has changed, please email the author your findings.
+
+If an error occurs in trying to standardize the address, then no array
+will be returned. Otherwise, a four-element array will be returned.
+
+To see debugging output, set $Data::Address::Standardize::verbose to a
+true value.
 
 
 =head1 TERMS OF USE
@@ -207,7 +275,7 @@ Gregor N. Purdy, C<gregor@focusresearch.com>.
 
 =head1 COPYRIGHT
 
-Copyright (C) 1999 Gregor N. Purdy. All rights reserved.
+Copyright (C) 1999-2000 Gregor N. Purdy. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 

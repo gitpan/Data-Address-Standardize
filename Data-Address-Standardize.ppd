@@ -1,0 +1,12 @@
+<SOFTPKG NAME="Data-Address-Standardize" VERSION="0,001,0,0">
+	<TITLE>Data-Address-Standardize</TITLE>
+	<ABSTRACT>Standardize U.S. postal addresses</ABSTRACT>
+	<AUTHOR>Gregor N. Purdy (gregor@focusresearch.com)</AUTHOR>
+	<IMPLEMENTATION>
+		<DEPENDENCY NAME="HTTP-Request-Common" VERSION="0,0,0,0" />
+		<DEPENDENCY NAME="LWP-UserAgent" VERSION="0,0,0,0" />
+		<OS NAME="linux" />
+		<ARCHITECTURE NAME="i386-linux" />
+		<CODEBASE HREF="Data-Address-Standardize.tar.gz" />
+	</IMPLEMENTATION>
+</SOFTPKG>

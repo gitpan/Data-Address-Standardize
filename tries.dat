@@ -1,0 +1,37 @@
+###############################################################################
+
+Street = foo bar
+City   = splee
+State  = quux
+Zip    = 
+
+Street = <error>
+City   = 
+State  = 
+Zip    = 
+
+###############################################################################
+
+Street = 6216 Eddington Drive
+City   = Liberty Township
+State  = oh
+Zip    = 
+
+Street = 6216 EDDINGTON ST
+City   = LIBERTY TOWNSHIP
+State  = OH
+Zip    = 45044-9761
+
+###############################################################################
+
+Street = 3303 Pine Meadow DR SE #202
+City   = Kentwood
+State  = MI
+Zip    = 49512
+
+Street = 3303 PINE MEADOW DR SE APT 202
+City   = KENTWOOD
+State  = MI
+Zip    = 49512-8325
+
+###############################################################################

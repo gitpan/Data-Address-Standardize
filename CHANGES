@@ -1,0 +1,30 @@
+
+0.002
+
+  * Fixed the regular expression for working with zip codes so it
+    won't be fooled by forms like '9999 NW 32ND ST'. The old RE
+	was looking for two characters followed by some digits. The new
+	RE is looking for two letters followed by a form like 99999 or
+	99999-9999.
+
+  * Added a $Data::Address::Standardize::verbose variable. If it is
+    set to true, then the input, HTTP request, HTTP response, and
+	output are all printed for each standardization. Added a line
+	in test.pl to set this, although it is commented out.
+
+  * Added code to test.pl to actually test the results rather than
+    just pretending they are ok.
+
+  * Added another test with an apartment number.
+
+  * Added a test that is supposed to fail.
+
+  * Made it return an empty array if there is an error.
+
+  * Split the tests into the file tries.dat.
+
+
+0.001
+
+  * This was the first version inflicted upon the public.
+

@@ -1,6 +1,9 @@
-Standardize.pm
+CHANGES
 COPYRIGHT
-MANIFEST
+Data-Address-Standardize.ppd
 Makefile.PL
+MANIFEST
 README
+Standardize.pm
 test.pl
+tries.dat
